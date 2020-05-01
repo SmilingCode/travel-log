@@ -25,11 +25,12 @@ const logEntrySchema = new Schema({
     min: -90,
     max: 90
   },
-  latitude: {
+  longitude: {
     ...requiredNum,
     min: -180,
     max: 180
   },
+  image: String,
   visitDate: {
     type: Date,
     required: true

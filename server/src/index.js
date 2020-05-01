@@ -8,16 +8,18 @@ require("dotenv").config();
 
 const middleWares = require("./middlewares");
 const logsRouter = require("./api/logs");
+const ratingsRouter = require("./api/ratings");
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/travel-log", {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.use(morgan("common"));
 app.use(helmet());
+
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -32,6 +34,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/logs", logsRouter);
+app.use("/api/ratings", ratingsRouter);
 
 app.use(middleWares.notFound);
 app.use(middleWares.errorHandler);
