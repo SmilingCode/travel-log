@@ -18,6 +18,13 @@ mongoose.connect(process.env.DATABASE_URL, {
   useUnifiedTopology: true,
 });
 
+mongoose.connection.on("error", (error) => {
+  console.log("Database connection error: ", error);
+});
+mongoose.connection.once("open", () => {
+  console.log("Connected to Database!");
+});
+
 app.use(morgan("common"));
 app.use(helmet());
 
