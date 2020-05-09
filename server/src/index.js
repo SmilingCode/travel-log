@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -27,10 +28,16 @@ app.use(
 );
 app.use(express.json());
 
+// Static files
+app.use(express.static(path.join(__dirname, "../../client/build")));
+// Serve React Client
 app.get("/", (req, res) => {
-  res.json({
-    message: "Hello World!",
-  });
+  // res.json({
+  //   message: "Hello World!",
+  // });
+  res.sendFile(
+    path.join(path.join(__dirname, "../../client/build"), "index.html")
+  );
 });
 
 app.use("/api/logs", logsRouter);

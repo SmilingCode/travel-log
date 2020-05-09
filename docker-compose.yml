@@ -1,0 +1,28 @@
+version: '3'
+services:
+  client:
+    container_name: myapp-react-client
+    build: ./client
+    volumes: 
+      - ./client:/usr/src/app/client
+    ports:
+      - '3000:3000'
+    links:
+      - server
+    stdin_open: true
+    
+  server:
+    container_name: myapp-node-express
+    build: ./server
+    volumes:
+      - ./server:/usr/src/app/server
+    ports: 
+      - '1337:1337'
+    links:
+      - mongo
+
+  mongo:
+    hostname: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
