@@ -1,3 +1,4 @@
+// server url http://3.22.114.1:1337
 const API_URL = "http://localhost:1337";
 
 export const getAllLogEntries = async () => {

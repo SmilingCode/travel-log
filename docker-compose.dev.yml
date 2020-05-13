@@ -1,59 +1,25 @@
-version: '3'
+version: 3
 services:
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    image: myapp-server-img
-    container_name: myapp-node-express
-    command: /usr/src/app/node_modules/.bin/nodemon index.js
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+  client:
+    container_name: app-react-client
+    build: ./client
     ports:
-      - 1337:1337
-    depends_on:
-      - mongo
-    env_file: ./server/.env
-    environment:
-      - NODE_ENV=development
-      - PORT=1337
-      - DATABASE_URL=mongodb://localhost/travel-log
-      - CORS_ORIGIN=http://localhost:3000
-    networks:
-      - app-network
+      - 3000:80
+    links:
+      - server
+    stdin_open: true
 
+  server:
+    container_name: app-node-express
+    build: ./server
+    ports: 
+      - 1337:1337
+    links:
+      - mongo
+      
   mongo:
+    hostname: mongo
     image: mongo
-    container_name: myapp-mongodb
     ports:
       - 27017:27017
-    networks:
-      - app-network
-
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    image: myapp-client-img
-    container_name: myapp-react-client
-    command: yarn start
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
-    ports:
-      - "3000:3000"
-    networks:
-      - app-network
-
-networks:
-  app-network:
-      driver: bridge
-
-volumes:
-  data-volume:
-  network_mode: 
-  web-root:
-    driver: local
+    
